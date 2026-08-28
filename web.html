@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qyveron — Websites for Any Business</title>
+<meta name="description" content="Qyveron designs and builds fast, responsive websites for businesses, shops, clinics, portfolios and startups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220;
+    --ink-soft:#141d30;
+    --violet:#6C5CE7;
+    --orange:#FF7A45;
+    --off-white:#F5F3EF;
+    --slate:#8892A6;
+    --card:#101a2e;
+    --border:rgba(255,255,255,0.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--off-white);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(11,18,32,0.85);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{font-size:22px;font-weight:700;letter-spacing:-0.02em;}
+  .logo span{color:var(--orange);}
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{font-size:14px;color:var(--slate);transition:color .2s;}
+  .nav-links a:hover{color:var(--off-white);}
+  .nav-cta{
+    background:var(--violet);color:#fff !important;
+    padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;
+    transition:transform .2s, background .2s;
+  }
+  .nav-cta:hover{background:#5b4bd6;transform:translateY(-1px);}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;}
+  .burger span{width:22px;height:2px;background:var(--off-white);}
+
+  /* HERO */
+  .hero{
+    padding:160px 0 100px;
+    position:relative;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;color:var(--orange);font-weight:600;
+    letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px;
+  }
+  .eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .hero h1{
+    font-size:56px;line-height:1.05;font-weight:700;letter-spacing:-0.03em;margin-bottom:24px;
+  }
+  .hero h1 em{font-style:normal;color:var(--violet);}
+  .hero p.lead{font-size:18px;color:var(--slate);max-width:480px;margin-bottom:36px;}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    padding:14px 28px;border-radius:8px;font-weight:600;font-size:15px;
+    display:inline-flex;align-items:center;gap:8px;transition:all .2s;
+    cursor:pointer;border:none;
+  }
+  .btn-primary{background:var(--orange);color:var(--ink);}
+  .btn-primary:hover{background:#ff8d5f;transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--border);color:var(--off-white);}
+  .btn-ghost:hover{border-color:var(--slate);}
+
+  /* MORPH BROWSER MOCKUP - signature element */
+  .mock-wrap{position:relative;}
+  .browser{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  }
+  .browser-bar{
+    display:flex;align-items:center;gap:8px;padding:12px 16px;
+    background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot:nth-child(1){background:#ff5f56;}
+  .dot:nth-child(2){background:#ffbd2e;}
+  .dot:nth-child(3){background:#27c93f;}
+  .browser-url{
+    flex:1;margin-left:8px;background:rgba(255,255,255,0.05);
+    border-radius:5px;padding:5px 12px;font-size:12px;color:var(--slate);
+    font-family:monospace;
+  }
+  .browser-body{height:340px;position:relative;}
+  .scene{
+    position:absolute;inset:0;padding:24px;opacity:0;
+    transition:opacity .8s ease;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .scene.active{opacity:1;}
+  .scene-label{
+    position:absolute;bottom:14px;right:16px;
+    font-size:11px;color:var(--slate);font-family:'Space Grotesk';
+    letter-spacing:0.05em;text-transform:uppercase;
+  }
+  .bar{height:14px;border-radius:4px;background:rgba(255,255,255,0.08);}
+  .bar.tall{height:20px;}
+  .bar.short{width:60%;}
+  .blockrow{display:flex;gap:12px;flex:1;}
+  .block{flex:1;border-radius:8px;background:rgba(255,255,255,0.05);}
+
+  /* restaurant scene */
+  #s1 .top{display:flex;justify-content:space-between;align-items:center;}
+  #s1 .brand{width:80px;} #s1 .nav-mock{width:160px;}
+  #s1 .hero-block{height:120px;border-radius:10px;background:linear-gradient(135deg,var(--orange),#ffb088);}
+
+  /* clinic scene */
+  #s2 .card-row{display:flex;gap:12px;flex:1;}
+  #s2 .mini{flex:1;background:rgba(255,255,255,0.05);border-radius:8px;border:1px solid var(--border);padding:10px;display:flex;flex-direction:column;gap:8px;}
+  #s2 .mini .circle{width:28px;height:28px;border-radius:50%;background:var(--violet);}
+
+  /* shop scene */
+  #s3 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;}
+  #s3 .prod{background:rgba(255,255,255,0.05);border-radius:8px;display:flex;flex-direction:column;}
+  #s3 .prod .img{flex:1;background:rgba(108,92,231,0.25);border-radius:8px 8px 0 0;}
+  #s3 .prod .info{height:22px;}
+
+  /* portfolio scene */
+  #s4 .big{flex:1;border-radius:10px;background:var(--ink-soft);border:1px solid var(--border);position:relative;overflow:hidden;}
+  #s4 .big::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,122,69,0.15),rgba(108,92,231,0.15));}
+
+  .glow{
+    position:absolute;width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle,rgba(108,92,231,0.25),transparent 70%);
+    top:-100px;right:-150px;filter:blur(40px);z-index:-1;
+  }
+
+  /* TRUST STRIP */
+  .trust{padding:40px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .trust .wrap{display:flex;justify-content:space-around;flex-wrap:wrap;gap:24px;text-align:center;}
+  .trust-item .num{font-size:32px;font-weight:700;font-family:'Space Grotesk';color:var(--orange);}
+  .trust-item .label{font-size:13px;color:var(--slate);margin-top:4px;}
+
+  /* SERVICES */
+  .section{padding:100px 0;}
+  .section-head{max-width:600px;margin-bottom:56px;}
+  .section-head .eyebrow{color:var(--violet);}
+  .section-head .eyebrow::before{background:var(--violet);}
+  .section-head h2{font-size:38px;letter-spacing:-0.02em;margin-bottom:12px;}
+  .section-head p{color:var(--slate);font-size:16px;}
+
+  .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .service-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:28px 24px;transition:transform .25s, border-color .25s;
+  }
+  .service-card:hover{transform:translateY(-6px);border-color:rgba(255,122,69,0.4);}
+  .service-card .icon{
+    width:44px;height:44px;border-radius:10px;
+    background:linear-gradient(135deg,var(--violet),var(--orange));
+    display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+    font-size:20px;
+  }
+  .service-card h3{font-size:17px;margin-bottom:8px;}
+  .service-card p{font-size:14px;color:var(--slate);}
+  .service-link{display:inline-flex;margin-top:18px;color:var(--orange);font-size:13px;font-weight:600;}
+  .service-link:hover{text-decoration:underline;text-underline-offset:4px;}
+
+  /* PROCESS */
+  .process{background:var(--ink-soft);}
+  .process-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .process-row::before{
+    content:'';position:absolute;top:22px;left:10%;right:10%;height:1px;
+    background:var(--border);
+  }
+  .step{position:relative;padding:0 16px;text-align:left;}
+  .step .n{
+    width:44px;height:44px;border-radius:50%;background:var(--ink);
+    border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk';font-weight:600;color:var(--orange);margin-bottom:20px;
+    position:relative;z-index:1;
+  }
+  .step h4{font-size:16px;margin-bottom:8px;}
+  .step p{font-size:13px;color:var(--slate);}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  .price-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:36px 28px;display:flex;flex-direction:column;position:relative;
+  }
+  .price-card.featured{
+    border-color:var(--orange);
+    background:linear-gradient(180deg,rgba(255,122,69,0.06),var(--card) 30%);
+  }
+  .featured-tag{
+    position:absolute;top:-13px;left:28px;
+    background:var(--orange);color:var(--ink);font-size:12px;font-weight:700;
+    padding:4px 12px;border-radius:20px;letter-spacing:0.02em;
+  }
+  .plan-name{font-size:14px;color:var(--slate);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;}
+  .plan-price{font-size:40px;font-weight:700;font-family:'Space Grotesk';margin-bottom:4px;}
+  .plan-price span{font-size:15px;color:var(--slate);font-weight:400;font-family:'Inter';}
+  .plan-desc{font-size:14px;color:var(--slate);margin-bottom:28px;}
+  .plan-features{list-style:none;flex:1;margin-bottom:28px;}
+  .plan-features li{
+    font-size:14px;padding:9px 0;border-top:1px solid var(--border);
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .plan-features li:first-child{border-top:none;}
+  .plan-features li::before{content:'✓';color:var(--orange);font-weight:700;flex-shrink:0;}
+  .price-card .btn{width:100%;justify-content:center;}
+
+  /* CONTACT / CTA */
+  .contact{
+    background:linear-gradient(135deg,var(--ink-soft),var(--ink));
+    border-radius:24px;padding:64px 48px;
+    display:flex;justify-content:space-between;align-items:center;gap:40px;
+    border:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .contact h2{font-size:32px;margin-bottom:12px;letter-spacing:-0.02em;}
+  .contact p{color:var(--slate);max-width:420px;}
+  .contact-actions{display:flex;flex-direction:column;gap:12px;}
+  .contact-link{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,0.04);border:1px solid var(--border);
+    padding:14px 20px;border-radius:10px;font-size:15px;font-weight:600;
+    transition:border-color .2s, transform .2s;min-width:280px;
+  }
+  .contact-link:hover{border-color:var(--orange);transform:translateX(4px);}
+  .contact-link .ic{width:22px;text-align:center;}
+
+  /* FOOTER */
+  footer{padding:40px 0;border-top:1px solid var(--border);text-align:center;color:var(--slate);font-size:13px;}
+  footer .logo{justify-content:center;display:inline-flex;margin-bottom:8px;}
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:38px;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .process-row{grid-template-columns:1fr 1fr;gap:32px 0;}
+    .process-row::before{display:none;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .contact{flex-direction:column;text-align:center;padding:40px 24px;}
+    .contact-link{min-width:100%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Qyveron<span>.</span></div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a href="https://purnasai1807-lgtm.github.io/purnasai_avvaru/" target="_blank" rel="noopener" class="portfolio-link">My portfolio</a>
+      <a href="https://wa.me/919948476542" target="_blank" rel="noopener" class="nav-cta">Get a Quote</a>
+    </div>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display==='flex'?'none':'flex'; document.querySelector('.nav-links').style.cssText+='flex-direction:column;position:fixed;top:72px;left:0;right:0;background:#0B1220;padding:24px;border-bottom:1px solid rgba(255,255,255,0.08);'">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="glow"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Websites, built to fit</div>
+      <h1>One studio.<br><em>Any</em> kind of website.</h1>
+      <p class="lead">Qyveron designs and builds websites for restaurants, clinics, shops, portfolios, startups — whatever your business is, we ship a site that fits it. Fast turnaround, fair pricing, real support.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/919948476542" target="_blank" rel="noopener" class="btn btn-primary">💬 Chat on WhatsApp</a>
+        <a href="#pricing" class="btn btn-ghost">See pricing</a>
+      </div>
+    </div>
+    <div class="mock-wrap">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="browser-url" id="urlbar">yourrestaurant.com</div>
+        </div>
+        <div class="browser-body">
+          <div class="scene active" id="s1">
+            <div class="top"><div class="bar brand tall"></div><div class="bar nav-mock"></div></div>
+            <div class="hero-block"></div>
+            <div class="blockrow"><div class="block"></div><div class="block"></div><div class="block"></div></div>
+            <div class="scene-label">Restaurant</div>
+          </div>
+          <div class="scene" id="s2">
+            <div class="top"><div class="bar brand tall"></div><div class="bar nav-mock"></div></div>
+            <div class="card-row">
+              <div class="mini"><div class="circle"></div><div class="bar"></div><div class="bar short"></div></div>
+              <div class="mini"><div class="circle"></div><div class="bar"></div><div class="bar short"></div></div>
+              <div class="mini"><div class="circle"></div><div class="bar"></div><div class="bar short"></div></div>
+            </div>
+            <div class="scene-label">Clinic</div>
+          </div>
+          <div class="scene" id="s3">
+            <div class="top"><div class="bar brand tall"></div><div class="bar nav-mock"></div></div>
+            <div class="grid4">
+              <div class="prod"><div class="img"></div><div class="info"></div></div>
+              <div class="prod"><div class="img"></div><div class="info"></div></div>
+              <div class="prod"><div class="img"></div><div class="info"></div></div>
+              <div class="prod"><div class="img"></div><div class="info"></div></div>
+            </div>
+            <div class="scene-label">Online Shop</div>
+          </div>
+          <div class="scene" id="s4">
+            <div class="top"><div class="bar brand tall"></div><div class="bar nav-mock"></div></div>
+            <div class="big"></div>
+            <div class="scene-label">Portfolio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-item"><div class="num">48h</div><div class="label">Typical first draft</div></div>
+    <div class="trust-item"><div class="num">₹4,999</div><div class="label">Starting price</div></div>
+    <div class="trust-item"><div class="num">100%</div><div class="label">Mobile responsive</div></div>
+    <div class="trust-item"><div class="num">1:1</div><div class="label">Direct WhatsApp support</div></div>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What we build</div>
+      <h2>Any business. Any kind of site.</h2>
+      <p>Whatever you run, we've got a site type for it — and if it's something new, we'll design it from scratch.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="icon">🏪</div>
+        <h3>Business Websites</h3>
+        <p>Clean, professional sites for shops, clinics, agencies and local services.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🛒</div>
+        <h3>Online Stores</h3>
+        <p>Product catalogs, cart, and checkout — sell online without the headache.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🎨</div>
+        <h3>Portfolios</h3>
+        <p>Show your work — for designers, photographers, freelancers, and creators.</p>
+        <a class="service-link" href="https://purnasai1807-lgtm.github.io/purnasai_avvaru/" target="_blank" rel="noopener">View my portfolio ↗</a>
+      </div>
+      <div class="service-card">
+        <div class="icon">🚀</div>
+        <h3>Landing Pages</h3>
+        <p>Sharp, focused pages built to convert visitors for launches and campaigns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section process" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From idea to live site</h2>
+      <p>A simple process, so you always know what's next.</p>
+    </div>
+    <div class="process-row">
+      <div class="step"><div class="n">1</div><h4>Tell us your idea</h4><p>Message us on WhatsApp with what your business does and what you need.</p></div>
+      <div class="step"><div class="n">2</div><h4>Get a quote</h4><p>We confirm scope and price upfront — no surprises later.</p></div>
+      <div class="step"><div class="n">3</div><h4>We design & build</h4><p>You get a first draft fast, and we revise until you're happy.</p></div>
+      <div class="step"><div class="n">4</div><h4>Go live</h4><p>We publish your site and hand over everything you need.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>Simple, honest pricing</h2>
+      <p>Pick a plan to start — every project is scoped and confirmed with you before we begin. Final price depends on pages and features.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">₹4,999<span>/ one-time</span></div>
+        <div class="plan-desc">A single, polished page to get your business online.</div>
+        <ul class="plan-features">
+          <li>1 page website</li>
+          <li>Mobile responsive design</li>
+          <li>Contact form / WhatsApp button</li>
+          <li>Basic SEO setup</li>
+          <li>3-day delivery</li>
+        </ul>
+        <a href="https://wa.me/919948476542?text=Hi%20Qyveron%2C%20I'm%20interested%20in%20the%20Starter%20plan" target="_blank" rel="noopener" class="btn btn-ghost">Start with Starter</a>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-tag">Most popular</div>
+        <div class="plan-name">Business</div>
+        <div class="plan-price">₹12,999<span>/ one-time</span></div>
+        <div class="plan-desc">A full multi-page site for a growing business.</div>
+        <ul class="plan-features">
+          <li>Up to 6 pages</li>
+          <li>Custom design, no templates</li>
+          <li>Gallery, testimonials, booking/enquiry form</li>
+          <li>SEO + Google Maps integration</li>
+          <li>1 month free support</li>
+          <li>5–7 day delivery</li>
+        </ul>
+        <a href="https://wa.me/919948476542?text=Hi%20Qyveron%2C%20I'm%20interested%20in%20the%20Business%20plan" target="_blank" rel="noopener" class="btn btn-primary">Choose Business</a>
+      </div>
+      <div class="price-card">
+        <div class="plan-name">Custom / E-commerce</div>
+        <div class="plan-price">Custom<span> quote</span></div>
+        <div class="plan-desc">Online stores, booking systems, or anything with custom features.</div>
+        <ul class="plan-features">
+          <li>Unlimited pages</li>
+          <li>Product catalog & payments</li>
+          <li>Admin panel / dashboard</li>
+          <li>Custom integrations</li>
+          <li>Ongoing support plan</li>
+        </ul>
+        <a href="https://wa.me/919948476542?text=Hi%20Qyveron%2C%20I'd%20like%20a%20custom%20quote" target="_blank" rel="noopener" class="btn btn-ghost">Get a custom quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <h2>Let's build your website.</h2>
+        <p>Message us your business idea and we'll get back with a quote — usually within a few hours.</p>
+      </div>
+      <div class="contact-actions">
+        <a class="contact-link" href="https://wa.me/919948476542" target="_blank" rel="noopener"><span class="ic">💬</span> WhatsApp: +91 99484 76542</a>
+        <a class="contact-link" href="mailto:qyveron77@gmail.com"><span class="ic">✉️</span> qyveron77@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">Qyveron<span>.</span></div>
+    <div>Websites for any business. © 2026 Qyveron. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const scenes = document.querySelectorAll('.scene');
+  const urls = ['yourrestaurant.com','yourclinic.com','yourstore.com','yourportfolio.com'];
+  const urlbar = document.getElementById('urlbar');
+  let idx = 0;
+  setInterval(() => {
+    scenes[idx].classList.remove('active');
+    idx = (idx + 1) % scenes.length;
+    scenes[idx].classList.add('active');
+    urlbar.textContent = urls[idx];
+  }, 3200);
+</script>
+
+</body>
+</html>
